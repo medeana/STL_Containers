@@ -69,9 +69,58 @@ namespace ft{
 
         // Capacity:
 
-        // void resize (size_type n, value_type val = value_type()){}
+        void resize(size_type n, value_type val = value_type()){
+            if (n > max_size())
+                throw std::length_error("vector");
+            if (n < sz)
+            {
+                for (size_t i = n; i < sz; i++)
+                    allocator.destroy(arr + i);
+            }
+            else if (n > sz)
+            {
+                if (n > cap && n <= cap * 2)
+                    reserve(cap * 2);
+                else if (n > cap * 2)
+                    reserve(n);
+                while (++sz < n)
+                    allocator.construct(arr + sz, val);
+            }
+        }
 
-        // void reserve (size_type n);
+        void reserve (size_type n){
+        if (n > max_size())
+            throw std::length_error("vector");
+        if (n > cap)
+        {
+            pointer new_arr = allocator.allocate(n);
+            for (size_t i = 0; i < n; i ++)
+            {
+                allocator.construct(new_arr + i, arr[i]);
+                allocator.destroy(arr + i);
+            }
+            if (cap)
+                allocator.deallocate(arr, cap);
+            arr = new_arr;
+            cap = n;
+        }
+
+        // void reserve(size_type n) {
+        // if (n > cap && n < max_size())
+        // {
+        // 	T *new_arr;
+        // 	new_arr = allocator.allocate(n);
+        // 	try {
+        // 		std::uninitialized_copy(arr, arr + sz, new_arr);
+        // 	} catch(...) {
+        // 		allocator.deallocate(new_arr, n);
+        // 		throw ;
+        // 	}
+        // 	allocator.deallocate(arr, cap);
+        // 	arr = new_arr;
+        // 	cap = n;
+        // }
+        }
 
         size_type size() const{
             return this->sz;
