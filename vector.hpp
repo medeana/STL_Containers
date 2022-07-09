@@ -64,8 +64,7 @@ namespace ft{
         };
 
         // Iterators:
-                // template <class InputIterator>
-                // void assign (InputIterator first, InputIterator last);
+
 
         // Capacity:
 
@@ -89,20 +88,21 @@ namespace ft{
         }
 
         void reserve (size_type n){
-        if (n > max_size())
-            throw std::length_error("vector");
-        if (n > cap)
-        {
-            pointer new_arr = allocator.allocate(n);
-            for (size_t i = 0; i < n; i ++)
+            if (n > max_size())
+                throw std::length_error("vector");
+            if (n > cap)
             {
-                allocator.construct(new_arr + i, arr[i]);
-                allocator.destroy(arr + i);
+                pointer new_arr = allocator.allocate(n);
+                for (size_t i = 0; i < n; i ++)
+                {
+                    allocator.construct(new_arr + i, arr[i]);
+                    allocator.destroy(arr + i);
+                }
+                if (cap)
+                    allocator.deallocate(arr, cap);
+                arr = new_arr;
+                cap = n;
             }
-            if (cap)
-                allocator.deallocate(arr, cap);
-            arr = new_arr;
-            cap = n;
         }
 
         // void reserve(size_type n) {
@@ -120,7 +120,6 @@ namespace ft{
         // 	arr = new_arr;
         // 	cap = n;
         // }
-        }
 
         size_type size() const{
             return this->sz;
@@ -181,6 +180,25 @@ namespace ft{
         
         // Modifiers:
 
+        void pop_back(){
+            if (!sz)
+                return ;
+            allocator.destroy(arr + (sz - 1));
+            sz--;
+        }
+
+        void push_back (const value_type& val){
+            if (!sz)
+                reserve(1);
+            if (sz == cap)  
+                reserve(cap * 2);
+            allocator.construct(arr + sz, val);
+            sz++;     
+        }
+
+        // template <class InputIterator>
+        // void assign (InputIterator first, InputIterator last);
+
         void assign (size_type n, const value_type& val){
             clear();
             if (n > cap){
@@ -204,6 +222,12 @@ namespace ft{
             return this->allocator;
         }
 
+        void swap (vector& x){
+            std::swap(this->allocator, x.allocator);
+            std::swap(this->arr, x.arr);
+            std::swap(this->sz, x.sz);
+            std::swap(this->cap, x.cap);
+        }
 
     private:
         pointer arr;
