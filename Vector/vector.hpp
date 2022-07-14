@@ -38,15 +38,28 @@ namespace ft{
                         allocator.construct(arr + i, val);
                  };
 
-        template <typename InputIterator>
-        vector(InputIterator first,  InputIterator last, const allocator_type &alloc = allocator_type(),
-               typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type* = NULL) : allocator(alloc),
-                    arr(0), sz(0), cap(0){
-            sz = last - first;
-            reserve(sz);
-            for(InputIterator i = first; i != last;i++)
-                push_back(*i);
-        }
+        // template <typename InputIterator>
+        // vector(InputIterator first, typename ft::enable_if<!is_integral<InputIterator>::value, InputIterator>::type last,
+        //         const allocator_type& alloc = allocator_type()) : arr(0), sz(0), cap(0), allocator(alloc){
+        //     sz = last - first;
+        //     reserve(sz);
+        //     for(;first != last; first++)
+        //         push_back(*first);
+        // }
+
+        template < typename InputIterator >
+        vector(InputIterator first, typename ft::enable_if<!is_integral<InputIterator>::value, InputIterator>::type last,
+                const allocator_type& alloc = allocator_type()) : arr(0), sz(0), cap(0), allocator(alloc) {
+			sz = ft::distance(first, last);
+			cap = sz;
+			arr = allocator.allocate(sz);
+			size_t i = 0;
+			while (first != last) {
+				arr[i] = *first;
+				first++;
+				i++;
+			}
+		}
 
 
         vector (const vector<value_type> &x) : cap(x.cap), sz(x.sz), allocator(x.allocator) {

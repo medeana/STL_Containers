@@ -17,25 +17,25 @@ int main(){
     it = v1.begin();
     ite = v1.end();
 
-    while (it != ite)
-    {
-        std::cout << *it << std::endl;
-        it++;
-    }
-
-    // ft::vector<int> v3(it, ite);
-
-    // ft::vector<int>::iterator it2;
-    // ft::vector<int>::iterator ite2;
-
-    // it2 = v3.begin();
-    // ite2 = v3.end();
-
-    // while (it2 != ite2)
+    // while (it != ite)
     // {
-    //     std::cout << *it2 << std::endl;
-    //     it2++;
+    //     std::cout << *it << std::endl;
+    //     it++;
     // }
+
+    ft::vector<int> v3(it, ite);
+
+    ft::vector<int>::iterator it2;
+    ft::vector<int>::iterator ite2;
+
+    it2 = v3.begin();
+    ite2 = v3.end();
+
+    while (it2 != ite2)
+    {
+        std::cout << *it2 << std::endl;
+        it2++;
+    }
 
     // std::cout << v3[1] << std::endl;
 

@@ -83,7 +83,8 @@ namespace ft {
 
 		template < typename U >
 		Rai_iterator&	operator= (const Rai_iterator<std::random_access_iterator_tag, U> &rhs) {
-            *this = rhs; return (*this);
+            *this = rhs;
+            return (*this);
         }
 
 		template < typename U >
