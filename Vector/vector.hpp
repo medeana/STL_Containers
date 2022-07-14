@@ -7,20 +7,23 @@
 #include <cassert>
 #include <iterator>
 #include <typeinfo>
+#include "random_access_iterator.hpp"
 
 namespace ft{
     template <class T, class Allocator = std::allocator<T> >
     class vector
     {
     public:
-        typedef T                                           value_type;
-        typedef Allocator                                   allocator_type;
-        typedef typename allocator_type::pointer            pointer;
-        typedef typename allocator_type::const_pointer      const_pointer;
-        typedef typename allocator_type::reference          reference;
-        typedef typename allocator_type::const_reference    const_reference;
-        typedef typename std::size_t                        size_type;
-        typedef typename std::ptrdiff_t                     difference_type;
+        typedef T                                                                           value_type;
+        typedef Allocator                                                                   allocator_type;
+        typedef typename allocator_type::pointer                                            pointer;
+        typedef typename allocator_type::const_pointer                                      const_pointer;
+        typedef typename allocator_type::reference                                          reference;
+        typedef typename allocator_type::const_reference                                    const_reference;
+        typedef typename std::size_t                                                        size_type;
+        typedef typename std::ptrdiff_t                                                     difference_type;
+		typedef ft::Rai_iterator< std::random_access_iterator_tag, value_type >				iterator; // can use pointer from allocator
+		typedef ft::Rai_iterator< std::random_access_iterator_tag, const value_type>			const_iterator;
 
 
         //Member functions
@@ -35,8 +38,15 @@ namespace ft{
                         allocator.construct(arr + i, val);
                  };
 
-                // template <class InputIterator>
-                // vector (InputIterator first, InputIterator last,  const allocator_type& alloc = allocator_type());
+        template <typename InputIterator>
+        vector(InputIterator first,  InputIterator last, const allocator_type &alloc = allocator_type(),
+               typename enable_if<!is_integral<InputIterator>::value, InputIterator>::type* = NULL) : allocator(alloc),
+                    arr(0), sz(0), cap(0){
+            sz = last - first;
+            reserve(sz);
+            for(InputIterator i = first; i != last;i++)
+                push_back(*i);
+        }
 
 
         vector (const vector<value_type> &x) : cap(x.cap), sz(x.sz), allocator(x.allocator) {
@@ -64,7 +74,21 @@ namespace ft{
         };
 
         // Iterators:
+        iterator 			begin(){
+            return (iterator (arr));
+        }
 
+		const_iterator		begin() const {
+            return(const_iterator (arr));
+        }
+
+		iterator			end() {
+            return (iterator (arr + sz));
+        }
+
+		const_iterator 		end() const {
+            return (const_iterator (arr + sz));
+        }
 
         // Capacity:
 
