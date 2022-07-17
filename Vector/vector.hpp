@@ -22,8 +22,8 @@ namespace ft{
         typedef typename allocator_type::const_reference                                    const_reference;
         typedef typename std::size_t                                                        size_type;
         typedef typename std::ptrdiff_t                                                     difference_type;
-		typedef ft::Rai_iterator< std::random_access_iterator_tag, value_type >				iterator; // can use pointer from allocator
-		typedef ft::Rai_iterator< std::random_access_iterator_tag, const value_type>			const_iterator;
+		typedef ft::Rai_iterator<std::random_access_iterator_tag, value_type>				iterator;
+		typedef ft::Rai_iterator<std::random_access_iterator_tag, const value_type>		    const_iterator;
 
 
         //Member functions
@@ -44,7 +44,7 @@ namespace ft{
             sz = ft::distance(first, last);
             cap = sz;
             arr = allocator.allocate(sz);
-            // int i = 0;
+            // size_t i = 0;
             for(;first != last; first++)
                 // arr[i++] = *first;
                 push_back(*first);
@@ -262,6 +262,29 @@ namespace ft{
             for (sz = 0; sz < n; sz++)
                 allocator.construct(arr + sz, val);
         }
+
+        iterator insert (iterator position, const value_type& val){
+            size_t n = ft::distance(begin(), position);
+            if (sz + 1 > cap)
+                reserve(cap * 2);
+            size_t i = 0;
+            while (arr[i])
+                i++;
+            while (i > n) {
+                allocator.construct(arr + i + 1, *(arr + i));
+                allocator.destroy(arr + i);
+                i--;
+            }
+            allocator.construct(arr + n, val);
+            sz++;
+            return (iterator(begin() + n));
+        }
+
+
+
+        // void insert (iterator position, size_type n, const value_type& val);
+        //     template <class InputIterator>
+        // void insert (iterator position, InputIterator first, InputIterator last);
 
         void     clear()
         {
