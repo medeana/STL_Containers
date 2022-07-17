@@ -38,28 +38,31 @@ namespace ft{
                         allocator.construct(arr + i, val);
                  };
 
-        // template <typename InputIterator>
-        // vector(InputIterator first, typename ft::enable_if<!is_integral<InputIterator>::value, InputIterator>::type last,
-        //         const allocator_type& alloc = allocator_type()) : arr(0), sz(0), cap(0), allocator(alloc){
-        //     sz = last - first;
-        //     reserve(sz);
-        //     for(;first != last; first++)
-        //         push_back(*first);
-        // }
-
-        template < typename InputIterator >
+        template <typename InputIterator>
         vector(InputIterator first, typename ft::enable_if<!is_integral<InputIterator>::value, InputIterator>::type last,
-                const allocator_type& alloc = allocator_type()) : arr(0), sz(0), cap(0), allocator(alloc) {
-			sz = ft::distance(first, last);
-			cap = sz;
-			arr = allocator.allocate(sz);
-			size_t i = 0;
-			while (first != last) {
-				arr[i] = *first;
-				first++;
-				i++;
-			}
-		}
+                const allocator_type& alloc = allocator_type()) : arr(0), sz(0), cap(0), allocator(alloc){
+            sz = ft::distance(first, last);
+            cap = sz;
+            arr = allocator.allocate(sz);
+            // int i = 0;
+            for(;first != last; first++)
+                // arr[i++] = *first;
+                push_back(*first);
+        }
+
+        // template < typename InputIterator >
+        // vector(InputIterator first, typename ft::enable_if<!is_integral<InputIterator>::value, InputIterator>::type last,
+        //         const allocator_type& alloc = allocator_type()) : arr(0), sz(0), cap(0), allocator(alloc) {
+		// 	sz = ft::distance(first, last);
+		// 	cap = sz;
+		// 	arr = allocator.allocate(sz);
+		// 	size_t i = 0;
+		// 	while (first != last) {
+		// 		arr[i] = *first;
+		// 		first++;
+		// 		i++;
+		// 	}
+		// }
 
 
         vector (const vector<value_type> &x) : cap(x.cap), sz(x.sz), allocator(x.allocator) {
@@ -142,21 +145,22 @@ namespace ft{
             }
         }
 
-        // void reserve(size_type n) {
-        // if (n > cap && n < max_size())
-        // {
-        // 	T *new_arr;
-        // 	new_arr = allocator.allocate(n);
-        // 	try {
-        // 		std::uninitialized_copy(arr, arr + sz, new_arr);
-        // 	} catch(...) {
-        // 		allocator.deallocate(new_arr, n);
-        // 		throw ;
-        // 	}
-        // 	allocator.deallocate(arr, cap);
-        // 	arr = new_arr;
-        // 	cap = n;
-        // }
+		// void reserve(size_type n) {
+		// 	if (n > cap && n < max_size())
+		// 	{
+		// 		T *newPtr;
+		// 		newPtr = allocator.allocate(n);
+		// 		try {
+		// 			std::uninitialized_copy(arr, arr + sz, newPtr);
+		// 		} catch(...) {
+		// 			allocator.deallocate(newPtr, n);
+		// 			throw ;
+		// 		}
+		// 		allocator.deallocate(arr, cap);
+		// 		arr = newPtr;
+		// 		cap = n;
+		// 	}
+		// }
 
         size_type size() const{
             return this->sz;
@@ -233,8 +237,19 @@ namespace ft{
             sz++;     
         }
 
-        // template <class InputIterator>
-        // void assign (InputIterator first, InputIterator last);
+        template <class InputIterator>
+        void	assign(InputIterator first, typename ft::enable_if<!is_integral<InputIterator>::value, InputIterator>::type last) {
+            clear();
+            if (arr)
+                allocator.deallocate(arr, cap);
+            sz = ft::distance(first, last);
+            cap = sz;
+            arr = allocator.allocate(cap);
+            for (int i = 0; first != last; first++){
+                allocator.construct(arr + i, *first);
+                i++;
+            }
+        }
 
         void assign (size_type n, const value_type& val){
             clear();
