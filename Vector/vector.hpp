@@ -337,6 +337,38 @@ namespace ft{
             sz = sz + n;
         }
 
+        iterator erase (iterator position){
+            size_t n = ft::distance(begin(), position);
+            size_t i = 0;
+            allocator.destroy(arr + n);
+            n++;
+            while (n < size()) {
+                allocator.construct(arr + n - 1, arr[n]);
+                n++;
+            }
+            sz--;
+            return (iterator(begin() + n));
+        }
+        
+        
+        iterator erase (iterator first, iterator last) {
+            size_t pos = ft::distance(begin(), first);
+            size_t n = ft::distance(first, last);
+            size_t en = ft::distance(last, end());
+            size_t i = pos + n;
+            size_t j = pos;
+            while (j < i) {
+                allocator.destroy(arr + j);
+                j++;
+            }
+            while (en < sz) {
+                allocator.construct(arr + en - n, arr[en]);
+                en++;
+            }
+            sz = sz - n;
+            return (iterator(arr + pos));
+        }
+
         void     clear()
         {
             for (size_type i = 0; i < sz; i++)
