@@ -127,40 +127,40 @@ namespace ft{
             }
         }
 
-        void reserve (size_type n){
-            if (n > max_size())
-                throw std::length_error("vector");
-            if (n > cap)
-            {
-                pointer new_arr = allocator.allocate(n);
-                for (size_t i = 0; i < n; i ++)
-                {
-                    allocator.construct(new_arr + i, arr[i]);
-                    allocator.destroy(arr + i);
-                }
-                if (cap)
-                    allocator.deallocate(arr, cap);
-                arr = new_arr;
-                cap = n;
-            }
-        }
+        // void reserve (size_type n){
+        //     if (n > max_size())
+        //         throw std::length_error("vector");
+        //     if (n > cap)
+        //     {
+        //         pointer new_arr = allocator.allocate(n);
+        //         for (size_t i = 0; i < n; i ++)
+        //         {
+        //             allocator.construct(new_arr + i, arr[i]);
+        //             allocator.destroy(arr + i);
+        //         }
+        //         if (cap)
+        //             allocator.deallocate(arr, cap);
+        //         arr = new_arr;
+        //         cap = n;
+        //     }
+        // }
 
-		// void reserve(size_type n) {
-		// 	if (n > cap && n < max_size())
-		// 	{
-		// 		T *newPtr;
-		// 		newPtr = allocator.allocate(n);
-		// 		try {
-		// 			std::uninitialized_copy(arr, arr + sz, newPtr);
-		// 		} catch(...) {
-		// 			allocator.deallocate(newPtr, n);
-		// 			throw ;
-		// 		}
-		// 		allocator.deallocate(arr, cap);
-		// 		arr = newPtr;
-		// 		cap = n;
-		// 	}
-		// }
+		void reserve(size_type n) {
+			if (n > cap && n < max_size())
+			{
+				T *newPtr;
+				newPtr = allocator.allocate(n);
+				try {
+					std::uninitialized_copy(arr, arr + sz, newPtr);
+				} catch(...) {
+					allocator.deallocate(newPtr, n);
+					throw ;
+				}
+				allocator.deallocate(arr, cap);
+				arr = newPtr;
+				cap = n;
+			}
+		}
 
         size_type size() const{
             return this->sz;
@@ -282,9 +282,60 @@ namespace ft{
 
 
 
-        // void insert (iterator position, size_type n, const value_type& val);
-        //     template <class InputIterator>
-        // void insert (iterator position, InputIterator first, InputIterator last);
+        void insert (iterator position, size_type n, const value_type& val){
+            size_t dis = ft::distance(begin(), position);
+            if (sz + n > cap && sz + n > cap * 2)
+                reserve(sz + n);
+            else if (sz + n > cap && sz + n < cap * 2)
+                reserve(cap * 2);
+            size_t i = sz;
+            while (i >= dis){
+                allocator.construct(arr + i + n, arr[i]);
+                allocator.destroy(arr + i);
+                i--;
+            }
+            size_t j = n + dis;
+            for (;dis < j; dis++)
+                allocator.construct(arr + dis, val);
+            sz = sz + n;
+        }
+
+
+        template <class InputIterator>
+        void insert (iterator position, InputIterator first, InputIterator last){
+            size_t dis = ft::distance(begin(), position);
+            size_t n = ft::distance(first, last);
+            size_t capa = 0;
+            if (sz + n >= cap * 2)
+                capa = sz + n;
+            else if (sz + n > cap && sz + n < cap * 2)
+                capa = cap * 2;
+            else
+                capa = cap;
+            pointer new_arr = NULL;
+            new_arr = allocator.allocate(capa);
+            size_t i = 0;
+            for (;i < dis; i++){
+                allocator.construct(new_arr + i, arr[i]);
+                allocator.destroy(arr + i);
+            }
+            size_t j = i;
+            while (first != last) {
+                allocator.construct(new_arr + i, *first);
+                first++;
+                i++;
+            }
+            while (arr[j]) {
+                allocator.construct(new_arr + i, arr[j]);
+                allocator.destroy(arr + j);
+                i++;
+                j++;
+            }
+            allocator.deallocate(arr, cap);
+            arr = new_arr;
+            cap = capa;
+            sz = sz + n;
+        }
 
         void     clear()
         {
