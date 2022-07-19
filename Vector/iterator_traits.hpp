@@ -37,6 +37,11 @@ namespace ft{
 
     template<typename InputIterator>
 	typename iterator_traits<InputIterator*>::difference_type distance(InputIterator first, InputIterator last) {
+		// size_t dist = 0;
+		// for (; first != last; first++) {
+		// 	dist++;
+		// }
+        // return dist;
 		return (last - first);
 	}
 

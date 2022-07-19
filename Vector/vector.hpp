@@ -8,6 +8,7 @@
 #include <iterator>
 #include <typeinfo>
 #include "random_access_iterator.hpp"
+#include "reverse_iterator.hpp"
 
 namespace ft{
     template <class T, class Allocator = std::allocator<T> >
@@ -24,7 +25,8 @@ namespace ft{
         typedef typename std::ptrdiff_t                                                     difference_type;
 		typedef ft::Rai_iterator<std::random_access_iterator_tag, value_type>				iterator;
 		typedef ft::Rai_iterator<std::random_access_iterator_tag, const value_type>		    const_iterator;
-
+        typedef ft::reverse_iterator<iterator>                                              reverse_iterator;
+        typedef ft::reverse_iterator<const_iterator>                                        const_reverse_iterator;
 
         //Member functions
 
@@ -106,6 +108,21 @@ namespace ft{
             return (const_iterator (arr + sz));
         }
 
+		const_reverse_iterator rbegin() const {
+            return const_reverse_iterator(end());
+        }
+
+		reverse_iterator	rbegin() {
+                return reverse_iterator(end());
+        }
+
+		const_reverse_iterator rend() const {
+            return const_reverse_iterator (_arr);
+        }
+
+		reverse_iterator	rend()	{
+            return reverse_iterator(_arr);
+        }
         // Capacity:
 
         void resize(size_type n, value_type val = value_type()){
