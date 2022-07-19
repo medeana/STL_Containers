@@ -30,11 +30,11 @@ namespace ft{
 
         //Member functions
 
-        explicit vector(const allocator_type& alloc = allocator_type()) : arr(0), sz(0), cap(0), allocator(alloc) {
+        explicit vector(const allocator_type& alloc = allocator_type()) : arr(0), cap(0), sz(0), allocator(alloc) {
         };
 
         explicit vector (size_type n, const value_type& val = value_type(),
-                 const allocator_type& alloc = allocator_type()) : sz(n), cap(n), allocator(alloc) {
+                 const allocator_type& alloc = allocator_type()) : cap(n), sz(n), allocator(alloc) {
                     arr = allocator.allocate(n);
                     for (size_t i = 0; i < n; i++)
                         allocator.construct(arr + i, val);
@@ -117,11 +117,11 @@ namespace ft{
         }
 
 		const_reverse_iterator rend() const {
-            return const_reverse_iterator (_arr);
+            return const_reverse_iterator (arr);
         }
 
 		reverse_iterator	rend()	{
-            return reverse_iterator(_arr);
+            return reverse_iterator(arr);
         }
         // Capacity:
 
@@ -356,7 +356,6 @@ namespace ft{
 
         iterator erase (iterator position){
             size_t n = ft::distance(begin(), position);
-            size_t i = 0;
             allocator.destroy(arr + n);
             n++;
             while (n < size()) {

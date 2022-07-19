@@ -2,37 +2,37 @@
 #include <vector>
 
 int main(){
-    std::vector<int> b1(0);
-    for (int i = 0; i <= 9; i++)
-        b1.push_back(i);
+    // std::vector<int> b1(0);
+    // for (int i = 0; i <= 9; i++)
+    //     b1.push_back(i);
 
-    std::vector<int>::iterator it;
-    std::vector<int>::iterator ite;
+    // std::vector<int>::iterator it;
+    // std::vector<int>::iterator ite;
 
-    b1.erase(b1.begin(), b1.end() - 5);
-    it = b1.begin();
-    ite = b1.end();
-    // while (it != ite)
-    // {
-    //     std::cout << *it << std::endl;
-    //     it++;
+    // b1.erase(b1.begin(), b1.end() - 5);
+    // it = b1.begin();
+    // ite = b1.end();
+    // // while (it != ite)
+    // // {
+    // //     std::cout << *it << std::endl;
+    // //     it++;
+    // // }
+    // ft::vector<int> v1(0);
+    // for (int i = 0; i <= 9; i++)
+    //     v1.push_back(i);
+
+    // ft::vector<int>::iterator it2;
+    // ft::vector<int>::iterator ite2;
+
+    // v1.erase(v1.begin(), v1.end() - 5);
+    // it2 = v1.begin();
+    // ite2 = v1.end();
+
+    // while (it != ite && it2 != ite2){
+    //     std::cout << *it++ << "   |   " << *it2++ << std::endl;
     // }
-    ft::vector<int> v1(0);
-    for (int i = 0; i <= 9; i++)
-        v1.push_back(i);
 
-    ft::vector<int>::iterator it2;
-    ft::vector<int>::iterator ite2;
-
-    v1.erase(v1.begin(), v1.end() - 5);
-    it2 = v1.begin();
-    ite2 = v1.end();
-
-    while (it != ite && it2 != ite2){
-        std::cout << *it++ << "   |   " << *it2++ << std::endl;
-    }
-
-    std::cout << v1.size() << " " << b1.size() << std::endl;
+    // std::cout << v1.size() << " " << b1.size() << std::endl;
 
     // std::cout << b1.capacity() << " " << v1.capacity() << std::endl;
     // std::vector<int> b2(5, 1);
