@@ -2,12 +2,48 @@
 #include <vector>
 
 int main(){
+
+    std::vector<int> v(0);
+
+    for (int i = 0; i < 9; i++)
+        v.push_back(i);
+    v.erase(v.begin() + 4);
+    // v.insert(v.begin() + 3, 5, 45);
+
+    std::vector<int>::iterator it;
+    std::vector<int>::iterator ite;
+    it = v.begin();
+    ite = v.end();
+    // std::vector<int>::iterator ite2;
+
+    // ite2 = v.insert(v.begin() + 3, 5);
+
+    ft::vector<int> v2(0);
+    for (int i = 0; i < 9; i++)
+        v2.push_back(i);
+
+    v2.erase(v2.begin() + 4);
+    // v2.insert(v2.begin() + 3, 5, 45);
+
+    ft::vector<int>::iterator it2;
+    ft::vector<int>::iterator ite2;
+
+
+    it2 = v2.begin();
+    ite2 = v2.end();
+
+    while (it != ite && it2 != ite2)
+    {
+        std::cout  << *it << "   |   " << *it2 << std::endl;
+        it++;
+        it2++;
+    }
+    std::cout << "\n" << v.size() << "  " << v.capacity() << std::endl;
+    std::cout << "\n" << v2.size() << "  " <<  v2.capacity() << std::endl;
     // std::vector<int> b1(0);
     // for (int i = 0; i <= 9; i++)
     //     b1.push_back(i);
 
-    // std::vector<int>::iterator it;
-    // std::vector<int>::iterator ite;
 
     // b1.erase(b1.begin(), b1.end() - 5);
     // it = b1.begin();
