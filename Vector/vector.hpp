@@ -277,7 +277,7 @@ namespace ft{
                 cap = n;
                 arr = allocator.allocate(cap);
             }
-            for (sz = 0; sz < n; ++sz)
+            for (sz = 0; sz < n; sz++)
                 allocator.construct(arr + sz, val);
         }
 
@@ -315,10 +315,11 @@ namespace ft{
             sz = sz + n;
         }
 
-
         template <class InputIterator>
         void insert (iterator position, InputIterator first,
                 typename ft::enable_if<!is_integral<InputIterator>::value, InputIterator>::type last){
+			if (position < this->begin() || position > this->begin())
+				std::logic_error("vector");
             size_t dis = ft::distance(begin(), position);
             size_t n = ft::distance(first, last);
             size_t capa = 0;
@@ -335,31 +336,36 @@ namespace ft{
                 allocator.construct(new_arr + i, arr[i]);
                 allocator.destroy(arr + i);
             }
-            size_t j = i;
+            size_t j = i; 
             while (first != last) {
                 allocator.construct(new_arr + i, *first);
                 first++;
                 i++;
             }
-            while (arr[j]) {
+            while (j <= size()) {
                 allocator.construct(new_arr + i, arr[j]);
                 allocator.destroy(arr + j);
                 i++;
                 j++;
             }
             allocator.deallocate(arr, cap);
-            arr = new_arr;
             cap = capa;
+            arr = new_arr;
             sz = sz + n;
         }
 
         iterator erase (iterator position){
+            if (position < begin() || position > end())
+				std::logic_error("vector");
+			if (position == end())
+				return end();
             size_t n = ft::distance(begin(), position);
             allocator.destroy(arr + n);
-            n++;
-            while (n < size()) {
-                allocator.construct(arr + n - 1, arr[n]);
-                n++;
+            size_t i = n;
+            while (i < size()) {
+                allocator.construct(arr + i, arr[i + 1]);
+                allocator.destroy(arr + i + 1);
+                i++;
             }
             sz--;
             return (iterator(begin() + n));
