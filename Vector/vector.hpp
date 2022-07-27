@@ -377,15 +377,17 @@ namespace ft{
             size_t pos = ft::distance(begin(), first);
             size_t n = ft::distance(first, last);
             size_t en = ft::distance(last, end());
+            size_t add = ft::distance(begin(), last);
             size_t i = pos + n;
             size_t j = pos;
-            while (j < i) {
+            while (j < pos) {
                 allocator.destroy(arr + j);
                 j++;
             }
-            while (en < sz) {
-                allocator.construct(arr + en - n, arr[en]);
-                en++;
+            i = 0;
+            while (i < en) {
+                allocator.construct(arr + pos + i, *(arr + add + i));
+                i++;
             }
             sz = sz - n;
             return (iterator(begin() + pos));
