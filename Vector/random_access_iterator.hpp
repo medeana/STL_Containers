@@ -12,6 +12,7 @@ namespace ft {
 		typedef RAI         value_type;
 		typedef Distance	difference_type;
 		typedef Pointer		pointer;
+		typedef Pointer		iterator_type;
 		typedef Reference	reference;
 		typedef Category	iterator_category;
 
