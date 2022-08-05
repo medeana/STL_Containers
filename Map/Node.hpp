@@ -1,42 +1,75 @@
 #ifndef NODE_HPP
 # define NODE_HPP
 
-template <class T>
-struct Node
+#include "nullptr.hpp"
+
+namespace ft
 {
-    typedef T 			value_type;
-    typedef Node* 		node_pointer;
+	template<typename T>
+	struct node
+	{
+		typedef	T						value_type;
+		value_type						data;
+		node*							left;
+		node*							right;
+		node*							prev;
+		bool							nill;
+		bool							black;
 
-    Node()
-    {}
-    explicit Node(const value_type & value, bool is_red = true, node_pointer parent = NULL,
-        node_pointer right = NULL, node_pointer left = NULL) : value(value), 
-            is_red(is_red), parent(parent), right(right), left(left)
-    {}
+		node() : nill(true) {}
 
-    Node(const Node & rhs) : value(rhs.value), is_red(rhs.is_red), parent(rhs.parent),
-        right(rhs.right), left(rhs.left) {}
-    
-    Node &operator=(const Node & rhs)
-    {
-        if (this != &rhs)
-        {
-            this->value = rhs.value;
-            this->is_red = rhs.is_red;
-            this->parent = rhs.parent;
-            this->right = rhs.right;
-            this->left = rhs.left;
-        }
-        return *this;
-    
-    }
-    ~Node() {}
+		node(const T val) : data(val), nill(false) {}
 
-    value_type 			value;
-    bool 				is_red;
-    node_pointer 		parent;
-    node_pointer 		right;
-    node_pointer 		left;
-};
+		node(const T& _data, node* _nill) 
+		: data(_data), left(_nill), right(_nill), prev(_nill), nill(false), black(false) {}
+
+		~node() {}
+
+		node(node const& other) : data(other.data)
+		{
+			left = other.left;
+			right = other.right;
+			prev = other.prev;
+			nill = other.nill;
+			black = other.black;
+		}
+		
+		value_type& get_data() 
+		{
+			return data;
+		}
+
+		const value_type& get_data() const 
+		{
+			return data;
+		}
+
+		void	set_prev(node* _prev)
+		{
+			this->prev = _prev;
+		}
+		
+		void	set_nill(bool set)
+		{
+			this->nill = set;
+		}
+
+		bool get_nill() const
+		{
+			return this->nill;
+		}
+
+		bool get_nill() 
+		{
+			return this->nill;
+		}
+
+		bool get_color()
+		{
+			return this->black;
+		}
+	};
+
+}
 
 #endif
