@@ -255,18 +255,10 @@ namespace ft{
             sz++;     
         }
 
-        template <class InputIterator>
-        void	assign(InputIterator first, typename ft::enable_if<!is_integral<InputIterator>::value, InputIterator>::type last) {
-            clear();
-            if (arr)
-                allocator.deallocate(arr, cap);
-            sz = ft::distance(first, last);
-            cap = sz;
-            arr = allocator.allocate(cap);
-            for (int i = 0; first != last; first++){
-                allocator.construct(arr + i, *first);
-                i++;
-            }
+        template <typename InputIterator>
+        void assign(InputIterator first, InputIterator last)
+        {
+            vector<value_type>(first,last).swap(*this);
         }
 
         void assign (size_type n, const value_type& val){
@@ -318,7 +310,7 @@ namespace ft{
         template <class InputIterator>
         void insert (iterator position, InputIterator first,
                 typename ft::enable_if<!is_integral<InputIterator>::value, InputIterator>::type last){
-			if (position < this->begin() || position > this->begin())
+			if (position < this->begin() || position > this->end())
 				std::logic_error("vector");
             size_t dis = ft::distance(begin(), position);
             size_t n = ft::distance(first, last);

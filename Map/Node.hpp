@@ -1,75 +1,47 @@
-#ifndef NODE_HPP
-# define NODE_HPP
-
-#include "nullptr.hpp"
+#ifndef 	NODE_HPP
+# define 	NODE_HPP
 
 namespace ft
 {
-	template<typename T>
-	struct node
+	template <class T>
+	struct Node
 	{
-		typedef	T						value_type;
-		value_type						data;
-		node*							left;
-		node*							right;
-		node*							prev;
-		bool							nill;
-		bool							black;
+		typedef T 			value_type;
+		typedef Node * 		node_pointer;
 
-		node() : nill(true) {}
-
-		node(const T val) : data(val), nill(false) {}
-
-		node(const T& _data, node* _nill) 
-		: data(_data), left(_nill), right(_nill), prev(_nill), nill(false), black(false) {}
-
-		~node() {}
-
-		node(node const& other) : data(other.data)
+		Node()
+		{}
+		explicit Node(	const value_type & value, bool is_red = true,
+						node_pointer parent = NULL, node_pointer right = NULL, node_pointer left = NULL)
+		:	_value(value), 		__is_red(is_red), 
+			__parent(parent), 	__right(right), 
+			__left(left)
+		{}
+		Node(const Node & rhs) 
+		: 	_value(rhs._value), 	__is_red(rhs.__is_red), 
+			__parent(rhs.__parent), __right(rhs.__right), 
+			__left(rhs.__left)
+		{}
+		Node &operator=(const Node & rhs)
 		{
-			left = other.left;
-			right = other.right;
-			prev = other.prev;
-			nill = other.nill;
-			black = other.black;
+			if (this != &rhs)
+			{
+				this->_value = rhs._value;
+				this->__is_red = rhs.__is_red;
+				this->parent = rhs.__parent;
+				this->__right = rhs.__right;
+				this->__left = rhs.__left;
+			}
+			return *this;
 		}
-		
-		value_type& get_data() 
-		{
-			return data;
-		}
-
-		const value_type& get_data() const 
-		{
-			return data;
-		}
-
-		void	set_prev(node* _prev)
-		{
-			this->prev = _prev;
-		}
-		
-		void	set_nill(bool set)
-		{
-			this->nill = set;
-		}
-
-		bool get_nill() const
-		{
-			return this->nill;
-		}
-
-		bool get_nill() 
-		{
-			return this->nill;
-		}
-
-		bool get_color()
-		{
-			return this->black;
-		}
+		~Node() {}
+	
+		value_type 			_value;
+		bool 				__is_red;
+		node_pointer 		__parent;
+		node_pointer 		__right;
+		node_pointer 		__left;
 	};
-
 }
 
 #endif
